@@ -20,6 +20,7 @@ struct lmtp_settings {
 	const char *lmtp_hdr_delivery_address;
 	const char *lmtp_rawlog_dir;
 	const char *lmtp_proxy_rawlog_dir;
+	bool lmtp_debug;
 
 	const char *login_greeting;
 	const char *login_trusted_networks;
