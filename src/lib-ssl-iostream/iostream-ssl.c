@@ -155,6 +155,8 @@ void ssl_iostream_unref(struct ssl_iostream **_ssl_io)
 {
 	struct ssl_iostream *ssl_io = *_ssl_io;
 
+	if (ssl_io == NULL)
+		return;
 	*_ssl_io = NULL;
 	ssl_vfuncs->unref(ssl_io);
 }
