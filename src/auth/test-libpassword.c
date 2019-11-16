@@ -120,6 +120,10 @@ static void test_password_schemes(void)
 					       "HACNf9CII7cMz3XjRy/Oh3Ae2LHApoDyNw74d3YtFws=,"
 					       "AQH0j7Hf8J12g8eNBadvzlNB2am3PxgNwFCFd3RxEaw=",
 			     "test");
+	test_password_scheme("SCRAM-SHA-512", "{SCRAM-SHA-512}4096,/56u5SMjcpp7fVxNzZu6zA==,"
+					       "HQ5g9mopI4nDrRo62PXFbjR34tC/sTUHHkeVtd4zA6wQVvwvSoSImWS+TWwSyUkDiJr9rs7EOm/eW9rSa+HLMg==,"
+					       "EvpnDkzAVB/tFxl7Wz1jMAofTRKL5ajTqNc17eFeri0wADgDUDG7NlpivUNgVDD/w7t3fbyoyKpd0pdGT+2Big==",
+			     "test");
 	test_password_scheme("BLF-CRYPT", "{BLF-CRYPT}$2y$05$11ipvo5dR6CwkzwmhwM26OXgzXwhV2PyPuLV.Qi31ILcRcThQpEiW", "test");
 #ifdef HAVE_LIBSODIUM
 	test_password_scheme("ARGON2I", "{ARGON2I}$argon2i$v=19$m=32768,t=4,p=1$f2iuP4aUeNMrgu34fhOkkg$1XSZZMWlIs0zmE+snlUIcLADO3GXbA2O/hsQmmc317k", "test");

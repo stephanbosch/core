@@ -819,6 +819,8 @@ static const struct password_scheme builtin_schemes[] = {
 	  scram_sha1_generate},
 	{ "SCRAM-SHA-256", PW_ENCODING_NONE, 0, scram_sha256_verify,
 	  scram_sha256_generate},
+	{ "SCRAM-SHA-512", PW_ENCODING_NONE, 0, scram_sha512_verify,
+	  scram_sha512_generate},
 	{ "HMAC-MD5", PW_ENCODING_HEX, CRAM_MD5_CONTEXTLEN,
 	  NULL, cram_md5_generate },
 	{ "DIGEST-MD5", PW_ENCODING_HEX, MD5_RESULTLEN,

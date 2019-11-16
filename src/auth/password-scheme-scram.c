@@ -222,3 +222,19 @@ void scram_sha256_generate(const char *plaintext,
 {
 	scram_generate(&hash_method_sha256, plaintext, raw_password_r, size_r);
 }
+
+int scram_sha512_verify(const char *plaintext,
+			const struct password_generate_params *params ATTR_UNUSED,
+			const unsigned char *raw_password, size_t size,
+			const char **error_r)
+{
+	return scram_verify(&hash_method_sha512, "SCRAM-SHA-512", plaintext,
+			    raw_password, size, error_r);
+}
+
+void scram_sha512_generate(const char *plaintext,
+			   const struct password_generate_params *params ATTR_UNUSED,
+			   const unsigned char **raw_password_r, size_t *size_r)
+{
+	scram_generate(&hash_method_sha512, plaintext, raw_password_r, size_r);
+}
