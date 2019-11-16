@@ -4,7 +4,7 @@
 #include "hash-method.h"
 #include "sha1.h"
 
-#define HMAC_MAX_CONTEXT_SIZE 256
+#define HMAC_MAX_CONTEXT_SIZE 512
 
 struct hmac_context_priv {
 	char ctx[HMAC_MAX_CONTEXT_SIZE];
