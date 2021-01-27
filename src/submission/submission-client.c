@@ -174,12 +174,12 @@ static void client_init_urlauth(struct client *client)
 	client->urlauth_ctx = imap_urlauth_init(client->user, &config);
 }
 
-struct client *client_create(int fd_in, int fd_out,
-			     struct mail_user *user,
-			     struct mail_storage_service_user *service_user,
-			     const struct submission_settings *set,
-			     const char *helo,
-			     const unsigned char *pdata, unsigned int pdata_len)
+struct client *
+client_create(int fd_in, int fd_out, struct mail_user *user,
+	      struct mail_storage_service_user *service_user,
+	      const struct submission_settings *set, const char *helo,
+	      const unsigned char *pdata, unsigned int pdata_len,
+	      bool no_greeting)
 {
 	enum submission_client_workarounds workarounds =
 		set->parsed_workarounds;
@@ -212,6 +212,7 @@ struct client *client_create(int fd_in, int fd_out,
 	smtp_set.max_client_idle_time_msecs = CLIENT_IDLE_TIMEOUT_MSECS;
 	smtp_set.max_message_size = set->submission_max_mail_size;
 	smtp_set.rawlog_dir = set->rawlog_dir;
+	smtp_set.no_greeting = no_greeting;
 	smtp_set.debug = user->mail_debug;
 
 	if ((workarounds & SUBMISSION_WORKAROUND_WHITESPACE_BEFORE_PATH) != 0) {

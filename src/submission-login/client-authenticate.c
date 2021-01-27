@@ -288,3 +288,51 @@ int cmd_auth(void *conn_ctx, struct smtp_server_cmd_ctx *cmd,
 	(void)client_auth_begin(client, data->sasl_mech, data->initial_response);
 	return 0;
 }
+
+void cmd_mail(struct smtp_server_cmd_ctx *cmd, const char *params)
+{
+	struct smtp_server_connection *conn = cmd->conn;
+	struct submission_client *subm_client =
+		smtp_server_connection_get_context(conn);
+	struct client *client = &subm_client->common;
+	enum submission_login_client_workarounds workarounds =
+		subm_client->set->parsed_workarounds;
+
+	if (HAS_NO_BITS(workarounds,
+			SUBMISSION_LOGIN_WORKAROUND_IMPLICIT_AUTH_EXTERNAL) ||
+	    sasl_server_find_available_mech(client, "EXTERNAL") == NULL) {
+		smtp_server_command_fail(cmd->cmd, 530, "5.7.0",
+					 "Authentication required.");
+		return;
+	}
+
+	struct smtp_server_helo_data *helo;
+	const char *prefix = "";
+
+	smtp_server_command_input_lock(cmd);
+
+	i_assert(subm_client->pending_auth == NULL);
+
+	helo = smtp_server_connection_get_helo_data(subm_client->conn);
+	if (helo->domain_valid) {
+		i_assert(helo->domain != NULL);
+		prefix = helo->domain;
+	}
+
+	/* pass ehlo parameter to post-login service upon successful login */
+	i_free(client->master_data_prefix);
+
+	buffer_t *buf = buffer_create_dynamic(default_pool, 2048);
+	buffer_append(buf, prefix, strlen(prefix));
+	buffer_append_c(buf, '\0');
+	buffer_append(buf, "MAIL ", 5);
+	buffer_append(buf, params, strlen(params));
+	buffer_append(buf, "\r\n", 2);
+
+	client->master_data_prefix_len = buf->used;
+	client->master_data_prefix = buffer_free_without_data(&buf);
+
+	subm_client->pending_auth = cmd;
+
+	(void)client_auth_begin_implicit(client, "EXTERNAL", "=");
+}

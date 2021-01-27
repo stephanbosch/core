@@ -167,6 +167,7 @@ submission_client_workaround_list[] = {
 	  SUBMISSION_WORKAROUND_WHITESPACE_BEFORE_PATH },
 	{ "mailbox-for-path",
 	  SUBMISSION_WORKAROUND_MAILBOX_FOR_PATH },
+	{ "implicit-auth-external", 0 },
 	{ NULL, 0 }
 };
 
